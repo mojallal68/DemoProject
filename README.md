@@ -59,3 +59,11 @@ The project includes comprehensive unit and integration tests to ensure the reli
 ## Logging and Monitoring
 The application utilizes Log4j for logging purposes. Log files are generated in the logs directory and contain information about application events, errors, and warnings.
 For monitoring, you can integrate the application with monitoring solutions such as Prometheus and Grafana to collect metrics and visualize performance data.
+
+
+## Frontend URL
+http://localhost:8080/frontend.html
+
+
+## OpenAPI definition
+http://localhost:8080/swagger-ui/index.html
