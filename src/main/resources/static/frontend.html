@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 20%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px; /* Adjust font size */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #openAccountResult, #customerInfo {
+            width: 50%;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<h1>Account Management</h1>
+
+<h2>Open Account</h2>
+<label for="customerId">Customer ID:</label>
+<input type="text" id="customerId" name="customerId"><br><br>
+<label for="initialCredit">Initial Credit:</label>
+<input type="text" id="initialCredit" name="initialCredit"><br><br>
+<button onclick="openAccount()">Open Account</button>
+<p id="openAccountResult"></p>
+
+<h2>Get Customer Info</h2>
+<label for="customerIdInfo">Customer ID:</label>
+<input type="text" id="customerIdInfo" name="customerIdInfo"><br><br>
+<button onclick="getCustomerInfo()">Get Customer Info</button>
+<div id="customerInfo"></div>
+
+<script>
+    function openAccount() {
+        var customerId = document.getElementById("customerId").value;
+        var initialCredit = document.getElementById("initialCredit").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/openAccount", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            document.getElementById("openAccountResult").innerText = xhr.responseText;
+        };
+        var data = JSON.stringify({"customerId": customerId, "initialCredit": initialCredit});
+        xhr.send(data);
+    }
+
+    function getCustomerInfo() {
+        var customerId = document.getElementById("customerIdInfo").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/customer/" + customerId, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var customerInfo = "Name: " + response.name + "<br>";
+                    customerInfo += "Surname: " + response.surname + "<br>";
+                    customerInfo += "Balance: " + response.balance + "<br>";
+                    customerInfo += "Transactions: " + JSON.stringify(response.transactions);
+                    document.getElementById("customerInfo").innerHTML = customerInfo;
+                } else {
+                    document.getElementById("customerInfo").innerText = xhr.responseText;
+                }
+            } else if (xhr.readyState === 2) {
+                console.log("State in not valid")
+            } else {
+                document.getElementById("customerInfo").innerText = xhr.responseText;
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
+</html>
