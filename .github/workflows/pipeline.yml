@@ -22,7 +22,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - run: echo "Reza has developed github action in developv1 branch"
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event. "
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
